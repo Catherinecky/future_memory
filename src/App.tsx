@@ -67,6 +67,11 @@ type SavedMemory = {
   createdAt: number;
 };
 
+type AssetsManifest = {
+  modern?: string[];
+  ui?: { fence?: string; title?: string; paper?: string; wakeNormal?: string; wakeHover?: string };
+};
+
 type KeywordOrigin = {
   x: number;
   y: number;
@@ -98,6 +103,7 @@ const UI = {
   paper: '/assets/backgrounds/paper2.webp',
   fence: '/assets/barrier/围挡/Group 38.webp',
 };
+const MAP_BACKGROUND_SRC = '/assets/backgrounds/map2025.png';
 const GLOBAL_MUSIC_SRC = '/assets/audio/global-theme.mp3';
 const GLOBAL_MUSIC_VOLUME = 0.35;
 const DEFAULT_MODERN_IMAGES = ['/assets/new-city/25cd8e17-4eff-4db8-a83c-9e9f1a6cc820.webp', '/assets/new-city/7cfa6337-dfd2-429f-be06-ae37f2dce37f.webp'];
@@ -395,12 +401,43 @@ const KEYWORD_SLOTS = [
   { x: [78, 93], y: [24, 38], scale: [0.68, 0.84] },
 ] as const;
 
+const preloadImages = (sources: string[], onProgress?: (progress: number) => void) => {
+  const uniqueSources = [...new Set(sources.filter(Boolean))];
+  if (!uniqueSources.length) {
+    onProgress?.(1);
+    return Promise.resolve();
+  }
+  let completed = 0;
+  const markComplete = () => {
+    completed += 1;
+    onProgress?.(completed / uniqueSources.length);
+  };
+
+  return Promise.all(
+    uniqueSources.map(
+      (src) =>
+        new Promise<void>((resolve) => {
+          const image = new Image();
+          let settled = false;
+          const done = () => {
+            if (settled) return;
+            settled = true;
+            markComplete();
+            resolve();
+          };
+          image.onload = () => {
+            if (image.decode) void image.decode().catch(() => undefined).finally(done);
+            else done();
+          };
+          image.onerror = done;
+          image.src = src;
+        }),
+    ),
+  ).then(() => undefined);
+};
+
 const preload = (sources: string[]) => {
-  sources.forEach((src) => {
-    const image = new Image();
-    image.src = src;
-    void image.decode?.().catch(() => undefined);
-  });
+  void preloadImages(sources);
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -445,36 +482,62 @@ function App() {
   const [result, setResult] = useState<MemoryItem | null>(null);
   const [savedMemories, setSavedMemories] = useState<SavedMemory[]>([]);
   const [returningHome, setReturningHome] = useState(false);
+  const [isBootReady, setIsBootReady] = useState(false);
+  const [bootProgress, setBootProgress] = useState(0);
   const returnHomeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     let alive = true;
-    fetch('/data/memories.json')
-      .then((response) => response.json() as Promise<MemoryItem[]>)
-      .then((items) => {
-        if (!alive) return;
-        setMemories(items);
-        const homePhotos = buildHomePhotoNodes(items);
-        setPhotos((current) => {
-          const savedPhotos = current.filter((photo) => photo.isUserSaved);
-          return savedPhotos.length ? [...homePhotos, ...savedPhotos] : homePhotos;
-        });
-        preload([...homePhotos.slice(0, 12).map((item) => item.src), UI.title, UI.wakeNormal, UI.wakeHover, UI.paper]);
+    const loadInitialData = async () => {
+      setBootProgress(6);
+      const [items, manifest] = await Promise.all([
+        fetch('/data/memories.json').then((response) => response.json() as Promise<MemoryItem[]>),
+        fetch('/data/assets.json')
+          .then((response) => response.json() as Promise<AssetsManifest>)
+          .catch((): AssetsManifest => ({})),
+      ]);
+      if (!alive) return;
+
+      setBootProgress(22);
+      setMemories(items);
+      const homePhotos = buildHomePhotoNodes(items);
+      const nextModern = manifest.modern?.length ? manifest.modern : DEFAULT_MODERN_IMAGES;
+      const nextFence = manifest.ui?.fence || UI.fence;
+      setModernImages(nextModern);
+      setFenceSrc(nextFence);
+
+      const storedMemories = readSavedMemories();
+      if (storedMemories.length) setSavedMemories(storedMemories);
+      setPhotos((current) => {
+        const savedPhotos = current.filter((photo) => photo.isUserSaved);
+        return savedPhotos.length ? [...homePhotos, ...savedPhotos] : homePhotos;
       });
 
-    fetch('/data/assets.json')
-      .then((response) => response.json() as Promise<{ modern?: string[]; ui?: { fence?: string; title?: string; paper?: string; wakeNormal?: string; wakeHover?: string } }>)
-      .then((manifest) => {
-        if (!alive) return;
-        const nextModern = manifest.modern?.length ? manifest.modern : DEFAULT_MODERN_IMAGES;
-        setModernImages(nextModern);
-        if (manifest.ui?.fence) setFenceSrc(manifest.ui.fence);
-        preload([...nextModern.slice(0, 8), manifest.ui?.fence || UI.fence, manifest.ui?.title || UI.title, manifest.ui?.paper || UI.paper]);
-      })
-      .catch(() => undefined);
+      const bootSources = [
+        MAP_BACKGROUND_SRC,
+        UI.title,
+        UI.wakeNormal,
+        UI.wakeHover,
+        UI.paper,
+        nextFence,
+        ...homePhotos.slice(0, 12).map((item) => item.src),
+        ...nextModern.slice(0, 8),
+      ];
+      await preloadImages(bootSources, (progress) => {
+        if (alive) setBootProgress(Math.round(22 + progress * 76));
+      });
+      if (!alive) return;
+      setBootProgress(100);
+      window.setTimeout(() => {
+        if (alive) setIsBootReady(true);
+      }, 160);
+    };
 
-    const storedMemories = readSavedMemories();
-    if (storedMemories.length) setSavedMemories(storedMemories);
+    void loadInitialData().catch(() => {
+      if (!alive) return;
+      setBootProgress(100);
+      setIsBootReady(true);
+    });
 
     return () => {
       alive = false;
@@ -600,39 +663,56 @@ function App() {
 
   return (
     <main className="app-shell">
-      <CursorField />
-      <GlobalMusicControl />
-      <HomeView
-        photos={photos}
-        setPhotos={setPhotos}
-        modernImages={modernImages}
-        fenceSrc={fenceSrc}
-        onOpenDetail={openDetail}
-        onWake={() => setFlow('wake')}
-        dimmed={!returningHome && (flow !== 'home' || Boolean(detailPhoto))}
-        scattered={!returningHome && flow !== 'home'}
-      />
+      {!isBootReady ? (
+        <InitialLoadScreen progress={bootProgress} />
+      ) : (
+        <>
+          <CursorField />
+          <GlobalMusicControl />
+          <HomeView
+            photos={photos}
+            setPhotos={setPhotos}
+            modernImages={modernImages}
+            fenceSrc={fenceSrc}
+            onOpenDetail={openDetail}
+            onWake={() => setFlow('wake')}
+            dimmed={!returningHome && (flow !== 'home' || Boolean(detailPhoto))}
+            scattered={!returningHome && flow !== 'home'}
+          />
 
-      {detailPhoto && <DetailOverlay photo={detailPhoto} onClose={() => setDetailPhoto(null)} />}
-      {flow === 'wake' && <WakeView onClose={() => setFlow('home')} onConfirm={confirmKeywordAndLoad} />}
-      {flow === 'confirm' && <ConfirmView keyword={keyword} origin={keywordOrigin} onBack={() => setFlow('wake')} onYes={() => startLoading()} />}
-      {flow === 'loading' && result && (
-        <LoadingView
-          keyword={keyword}
-          result={result}
-          source={loadingSourceFor(matched, memories, result)}
-          onBack={() => setFlow('wake')}
-          onRetry={startLoading}
-          onEdit={() => setFlow('editor')}
-        />
-      )}
-      {flow === 'result' && result && (
-        <ResultView keyword={keyword} result={result} onBack={() => setFlow('wake')} onRetry={startLoading} onEdit={() => setFlow('editor')} />
-      )}
-      {flow === 'editor' && result && (
-        <EditorView keyword={keyword} result={result} onSave={saveMemory} onBack={() => setFlow('result')} returningHome={returningHome} />
+          {detailPhoto && <DetailOverlay photo={detailPhoto} onClose={() => setDetailPhoto(null)} />}
+          {flow === 'wake' && <WakeView onClose={() => setFlow('home')} onConfirm={confirmKeywordAndLoad} />}
+          {flow === 'confirm' && <ConfirmView keyword={keyword} origin={keywordOrigin} onBack={() => setFlow('wake')} onYes={() => startLoading()} />}
+          {flow === 'loading' && result && (
+            <LoadingView
+              keyword={keyword}
+              result={result}
+              source={loadingSourceFor(matched, memories, result)}
+              onBack={() => setFlow('wake')}
+              onRetry={startLoading}
+              onEdit={() => setFlow('editor')}
+            />
+          )}
+          {flow === 'result' && result && (
+            <ResultView keyword={keyword} result={result} onBack={() => setFlow('wake')} onRetry={startLoading} onEdit={() => setFlow('editor')} />
+          )}
+          {flow === 'editor' && result && (
+            <EditorView keyword={keyword} result={result} onSave={saveMemory} onBack={() => setFlow('result')} returningHome={returningHome} />
+          )}
+        </>
       )}
     </main>
+  );
+}
+
+function InitialLoadScreen({ progress }: { progress: number }) {
+  const displayProgress = clamp(progress, 0, 100);
+  return (
+    <section className="initial-loader" aria-label="Loading">
+      <div className="initial-loader__bar" aria-hidden>
+        <span style={{ width: `${displayProgress}%` }} />
+      </div>
+    </section>
   );
 }
 
@@ -1234,6 +1314,7 @@ function HomeView({
   const [cameraDepth, setCameraDepth] = useState(HOME_INITIAL_CAMERA_DEPTH);
   const targetDepth = useRef(HOME_INITIAL_CAMERA_DEPTH);
   const cameraCurrent = useRef(HOME_INITIAL_CAMERA_DEPTH);
+  const lastRenderedCameraDepth = useRef(HOME_INITIAL_CAMERA_DEPTH);
   const cameraVelocity = useRef(0);
   const rafRef = useRef<number | null>(null);
   const rootRef = useRef<HTMLElement>(null);
@@ -1253,7 +1334,10 @@ function HomeView({
       const delta = targetDepth.current - cameraCurrent.current;
       cameraVelocity.current = delta * HOME_CAMERA_EASE;
       cameraCurrent.current = Math.abs(delta) < 0.02 ? targetDepth.current : clamp(cameraCurrent.current + cameraVelocity.current, HOME_CAMERA_MIN_Z, HOME_CAMERA_MAX_Z);
-      setCameraDepth(cameraCurrent.current);
+      if (Math.abs(cameraCurrent.current - lastRenderedCameraDepth.current) > 0.01) {
+        lastRenderedCameraDepth.current = cameraCurrent.current;
+        setCameraDepth(cameraCurrent.current);
+      }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -2275,6 +2359,7 @@ function LoadingMorphCanvas({ source, target, aspectRatio, restartSignal }: { so
         const density = smoothstep(0.01, 0.6, totalT);
         const settle = smoothstep(0.42, 1, revealT);
         const breath = Math.sin(now / 1350) * 1.5;
+        const pointerActive = pointer.current.x > -100 && pointer.current.y > -100;
         ctx.clearRect(0, 0, w, h);
 
         if (settle > 0) {
@@ -2296,12 +2381,17 @@ function LoadingMorphCanvas({ source, target, aspectRatio, restartSignal }: { so
           const targetT = smoothstep(0, 1, easedReveal);
           const x = lerp(freeX, p.tx, targetT);
           const y = lerp(freeY, p.ty, targetT);
-          const dx = x - pointer.current.x;
-          const dy = y - pointer.current.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const repel = distance < 88 ? (88 - distance) / 88 : 0;
-          const offsetX = repel ? (dx / (distance || 1)) * repel * (38 + p.drift) : 0;
-          const offsetY = repel ? (dy / (distance || 1)) * repel * (28 + p.drift * 0.8) : 0;
+          let repel = 0;
+          let offsetX = 0;
+          let offsetY = 0;
+          if (pointerActive) {
+            const dx = x - pointer.current.x;
+            const dy = y - pointer.current.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            repel = distance < 88 ? (88 - distance) / 88 : 0;
+            offsetX = repel ? (dx / (distance || 1)) * repel * (38 + p.drift) : 0;
+            offsetY = repel ? (dy / (distance || 1)) * repel * (28 + p.drift * 0.8) : 0;
+          }
           ctx.globalAlpha = visible * (0.34 + targetT * 0.72) * (1 - repel * 0.48);
           ctx.fillStyle = blendColor(p.fc, p.tc, easedReveal);
           ctx.beginPath();

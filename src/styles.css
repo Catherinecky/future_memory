@@ -60,6 +60,31 @@ button:focus-visible {
   background: #dadbd7;
 }
 
+.initial-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(rgba(218, 219, 215, 0.72), rgba(218, 219, 215, 0.72)),
+    url("/assets/backgrounds/map2025.png") center / cover no-repeat;
+}
+
+.initial-loader__bar {
+  width: min(280px, 42vw);
+  height: 2px;
+  overflow: hidden;
+  background: rgba(48, 47, 43, 0.18);
+}
+
+.initial-loader__bar > span {
+  display: block;
+  height: 100%;
+  background: rgba(34, 33, 31, 0.72);
+  transition: width 180ms ease;
+}
+
 .global-music {
   position: fixed;
   top: clamp(16px, 2.2vw, 28px);
@@ -214,7 +239,7 @@ button:focus-visible {
 .map-background {
   position: absolute;
   inset: -8%;
-  background: url("/assets/backgrounds/map-2000.webp") center / cover no-repeat;
+  background: url("/assets/backgrounds/map2025.png") center / cover no-repeat;
   filter: contrast(1.02) saturate(0.8) brightness(0.84);
   opacity: 0.93;
 }
@@ -1479,7 +1504,7 @@ button:focus-visible {
   background:
     linear-gradient(rgba(84, 82, 74, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(84, 82, 74, 0.1) 1px, transparent 1px),
-    url("/assets/backgrounds/map-2000.webp") center / cover no-repeat;
+    url("/assets/backgrounds/map2025.png") center / cover no-repeat;
   background-size: 48px 48px, 48px 48px, cover;
   filter: blur(4.8px) saturate(0.38) contrast(0.78) brightness(0.76);
   opacity: 0.54;

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+
+*.log
+.codex-*.log
+codex-*.log
+
+.DS_Store
+Thumbs.db
+
+*.tsbuildinfo
+.codex-temp/

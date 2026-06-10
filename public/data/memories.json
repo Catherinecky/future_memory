@@ -1994,5 +1994,797 @@
     },
     "depth": 0.92,
     "createdAt": 1717600648000
+  },
+  {
+    "id": "memory-112",
+    "src": "/assets/aigen-old/memory-50.webp",
+    "title": "窗边旧圆桌",
+    "tags": [
+      "圆桌",
+      "窗边",
+      "旧屋",
+      "水杯",
+      "远景"
+    ],
+    "mood": "安静",
+    "era": "旧城",
+    "type": "interior",
+    "defaultPosition": {
+      "x": 8,
+      "y": 58,
+      "rotation": -2
+    },
+    "depth": 0.94,
+    "createdAt": 1717600656000
+  },
+  {
+    "id": "memory-113",
+    "src": "/assets/aigen-old/memory-51.webp",
+    "title": "积水楼梯间",
+    "tags": [
+      "楼梯间",
+      "积水",
+      "雨天",
+      "旧楼",
+      "窗光"
+    ],
+    "mood": "潮湿",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 18,
+      "y": 58,
+      "rotation": -1
+    },
+    "depth": 0.942,
+    "createdAt": 1717600664000
+  },
+  {
+    "id": "memory-114",
+    "src": "/assets/aigen-old/memory-52.webp",
+    "title": "褪色旧店招",
+    "tags": [
+      "店招",
+      "卷闸门",
+      "旧字",
+      "街边",
+      "老店"
+    ],
+    "mood": "陈旧",
+    "era": "旧城",
+    "type": "shop",
+    "defaultPosition": {
+      "x": 30,
+      "y": 58,
+      "rotation": 0
+    },
+    "depth": 0.944,
+    "createdAt": 1717600672000
+  },
+  {
+    "id": "memory-115",
+    "src": "/assets/aigen-old/memory-54.webp",
+    "title": "树荫下的门口",
+    "tags": [
+      "门口",
+      "公告牌",
+      "树荫",
+      "旧椅子",
+      "街坊"
+    ],
+    "mood": "安稳",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 42,
+      "y": 58,
+      "rotation": 1
+    },
+    "depth": 0.946,
+    "createdAt": 1717600680000
+  },
+  {
+    "id": "memory-116",
+    "src": "/assets/aigen-old/memory-56.webp",
+    "title": "天井里的旧楼",
+    "tags": [
+      "天井",
+      "旧楼",
+      "防盗网",
+      "晾衣",
+      "窗户"
+    ],
+    "mood": "压抑",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 54,
+      "y": 58,
+      "rotation": 2
+    },
+    "depth": 0.948,
+    "createdAt": 1717600688000
+  },
+  {
+    "id": "memory-117",
+    "src": "/assets/aigen-old/memory-57.webp",
+    "title": "巷口小卖部",
+    "tags": [
+      "小卖部",
+      "巷口",
+      "招牌",
+      "货架",
+      "旧墙"
+    ],
+    "mood": "熟悉",
+    "era": "童年",
+    "type": "shop",
+    "defaultPosition": {
+      "x": 66,
+      "y": 58,
+      "rotation": -1
+    },
+    "depth": 0.95,
+    "createdAt": 1717600696000
+  },
+  {
+    "id": "memory-118",
+    "src": "/assets/aigen-old/memory-59.webp",
+    "title": "旧灯泡",
+    "tags": [
+      "灯泡",
+      "旧物",
+      "钨丝",
+      "光线",
+      "家里"
+    ],
+    "mood": "温暖",
+    "era": "童年",
+    "type": "object",
+    "defaultPosition": {
+      "x": 78,
+      "y": 58,
+      "rotation": 1
+    },
+    "depth": 0.952,
+    "createdAt": 1717600704000
+  },
+  {
+    "id": "memory-119",
+    "src": "/assets/aigen-old/memory-60.webp",
+    "title": "铁栏窗户",
+    "tags": [
+      "铁栏",
+      "窗户",
+      "旧楼",
+      "窗帘",
+      "防盗网"
+    ],
+    "mood": "安静",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 88,
+      "y": 58,
+      "rotation": 0
+    },
+    "depth": 0.954,
+    "createdAt": 1717600712000
+  },
+  {
+    "id": "memory-120",
+    "src": "/assets/aigen-old/memory-67.webp",
+    "title": "雨天窗边晾衣",
+    "tags": [
+      "晾衣",
+      "窗边",
+      "雨天",
+      "旧城",
+      "玻璃"
+    ],
+    "mood": "潮湿",
+    "era": "童年",
+    "type": "interior",
+    "defaultPosition": {
+      "x": 8,
+      "y": 63,
+      "rotation": -2
+    },
+    "depth": 0.956,
+    "createdAt": 1717600720000
+  },
+  {
+    "id": "memory-121",
+    "src": "/assets/aigen-old/memory-68.webp",
+    "title": "连廊外的远楼",
+    "tags": [
+      "连廊",
+      "栏杆",
+      "远楼",
+      "旧校舍",
+      "风景"
+    ],
+    "mood": "开阔",
+    "era": "校园",
+    "type": "building",
+    "defaultPosition": {
+      "x": 18,
+      "y": 63,
+      "rotation": -1
+    },
+    "depth": 0.958,
+    "createdAt": 1717600728000
+  },
+  {
+    "id": "memory-122",
+    "src": "/assets/aigen-old/memory-69.webp",
+    "title": "门口拖鞋和伞",
+    "tags": [
+      "拖鞋",
+      "雨伞",
+      "门口",
+      "旧屋",
+      "生活"
+    ],
+    "mood": "日常",
+    "era": "童年",
+    "type": "interior",
+    "defaultPosition": {
+      "x": 30,
+      "y": 63,
+      "rotation": 0
+    },
+    "depth": 0.96,
+    "createdAt": 1717600736000
+  },
+  {
+    "id": "memory-123",
+    "src": "/assets/aigen-old/memory-72.webp",
+    "title": "街边水果档",
+    "tags": [
+      "水果档",
+      "棚布",
+      "木箱",
+      "街边",
+      "老店"
+    ],
+    "mood": "热闹",
+    "era": "旧城",
+    "type": "shop",
+    "defaultPosition": {
+      "x": 42,
+      "y": 63,
+      "rotation": 1
+    },
+    "depth": 0.962,
+    "createdAt": 1717600744000
+  },
+  {
+    "id": "memory-124",
+    "src": "/assets/aigen-old/memory-74.webp",
+    "title": "夜里的楼下圆凳",
+    "tags": [
+      "塑料凳",
+      "夜晚",
+      "楼下",
+      "聊天",
+      "灯光"
+    ],
+    "mood": "温暖",
+    "era": "童年",
+    "type": "street",
+    "defaultPosition": {
+      "x": 54,
+      "y": 63,
+      "rotation": 2
+    },
+    "depth": 0.964,
+    "createdAt": 1717600752000
+  },
+  {
+    "id": "memory-125",
+    "src": "/assets/aigen-old/memory-75.webp",
+    "title": "小区夜灯",
+    "tags": [
+      "小区",
+      "夜灯",
+      "树下",
+      "塑料凳",
+      "楼下"
+    ],
+    "mood": "安稳",
+    "era": "童年",
+    "type": "street",
+    "defaultPosition": {
+      "x": 66,
+      "y": 63,
+      "rotation": -1
+    },
+    "depth": 0.966,
+    "createdAt": 1717600760000
+  },
+  {
+    "id": "memory-126",
+    "src": "/assets/aigen-old/memory-80.webp",
+    "title": "粉色塑料凳",
+    "tags": [
+      "塑料凳",
+      "粉色",
+      "旧物",
+      "楼下",
+      "童年"
+    ],
+    "mood": "日常",
+    "era": "童年",
+    "type": "object",
+    "defaultPosition": {
+      "x": 78,
+      "y": 63,
+      "rotation": 1
+    },
+    "depth": 0.968,
+    "createdAt": 1717600768000
+  },
+  {
+    "id": "memory-127",
+    "src": "/assets/aigen-old/memory-81.webp",
+    "title": "蓝色矮凳",
+    "tags": [
+      "矮凳",
+      "蓝色",
+      "塑料凳",
+      "旧物",
+      "楼下"
+    ],
+    "mood": "平淡",
+    "era": "童年",
+    "type": "object",
+    "defaultPosition": {
+      "x": 88,
+      "y": 63,
+      "rotation": 0
+    },
+    "depth": 0.97,
+    "createdAt": 1717600776000
+  },
+  {
+    "id": "memory-128",
+    "src": "/assets/aigen-old/memory-83.webp",
+    "title": "新旧交界路口",
+    "tags": [
+      "路口",
+      "旧楼",
+      "高楼",
+      "街道",
+      "城市更新"
+    ],
+    "mood": "遥远",
+    "era": "旧城",
+    "type": "street",
+    "defaultPosition": {
+      "x": 8,
+      "y": 68,
+      "rotation": -2
+    },
+    "depth": 0.972,
+    "createdAt": 1717600784000
+  },
+  {
+    "id": "memory-129",
+    "src": "/assets/aigen-old/memory-85.webp",
+    "title": "旧街店铺排",
+    "tags": [
+      "旧街",
+      "店铺",
+      "招牌",
+      "水果摊",
+      "街边"
+    ],
+    "mood": "热闹",
+    "era": "旧城",
+    "type": "shop",
+    "defaultPosition": {
+      "x": 18,
+      "y": 68,
+      "rotation": -1
+    },
+    "depth": 0.974,
+    "createdAt": 1717600792000
+  },
+  {
+    "id": "memory-130",
+    "src": "/assets/aigen-old/memory-86.webp",
+    "title": "树边老墙",
+    "tags": [
+      "老墙",
+      "树荫",
+      "旧屋",
+      "斑驳",
+      "小路"
+    ],
+    "mood": "安静",
+    "era": "旧城",
+    "type": "texture",
+    "defaultPosition": {
+      "x": 30,
+      "y": 68,
+      "rotation": 0
+    },
+    "depth": 0.976,
+    "createdAt": 1717600800000
+  },
+  {
+    "id": "memory-131",
+    "src": "/assets/aigen-old/memory-87.webp",
+    "title": "厂区旁小路",
+    "tags": [
+      "厂房",
+      "小路",
+      "旧墙",
+      "街道",
+      "路边"
+    ],
+    "mood": "朴素",
+    "era": "旧城",
+    "type": "street",
+    "defaultPosition": {
+      "x": 42,
+      "y": 68,
+      "rotation": 1
+    },
+    "depth": 0.978,
+    "createdAt": 1717600808000
+  },
+  {
+    "id": "memory-132",
+    "src": "/assets/aigen-old/memory-91.webp",
+    "title": "树荫下的塑料凳",
+    "tags": [
+      "塑料凳",
+      "树荫",
+      "楼下",
+      "院子",
+      "聊天"
+    ],
+    "mood": "放松",
+    "era": "童年",
+    "type": "street",
+    "defaultPosition": {
+      "x": 54,
+      "y": 68,
+      "rotation": 2
+    },
+    "depth": 0.98,
+    "createdAt": 1717600816000
+  },
+  {
+    "id": "memory-133",
+    "src": "/assets/aigen-old/memory-99.webp",
+    "title": "走廊饮水机",
+    "tags": [
+      "走廊",
+      "饮水机",
+      "校园",
+      "水桶",
+      "课间"
+    ],
+    "mood": "清冷",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 66,
+      "y": 68,
+      "rotation": -1
+    },
+    "depth": 0.982,
+    "createdAt": 1717600824000
+  },
+  {
+    "id": "memory-134",
+    "src": "/assets/aigen-old/memory-100.webp",
+    "title": "白墙宿舍楼",
+    "tags": [
+      "宿舍楼",
+      "白墙",
+      "旧照片",
+      "校园",
+      "街边"
+    ],
+    "mood": "明亮",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 78,
+      "y": 68,
+      "rotation": 1
+    },
+    "depth": 0.984,
+    "createdAt": 1717600832000
+  },
+  {
+    "id": "memory-135",
+    "src": "/assets/aigen-old/memory-101.webp",
+    "title": "雕像前广场",
+    "tags": [
+      "雕像",
+      "广场",
+      "校园",
+      "楼房",
+      "校门"
+    ],
+    "mood": "庄重",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 88,
+      "y": 68,
+      "rotation": 0
+    },
+    "depth": 0.986,
+    "createdAt": 1717600840000
+  },
+  {
+    "id": "memory-136",
+    "src": "/assets/aigen-old/memory-102.webp",
+    "title": "校门口的旧楼",
+    "tags": [
+      "校门",
+      "旧楼",
+      "学生",
+      "校园",
+      "街角"
+    ],
+    "mood": "怀旧",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 8,
+      "y": 73,
+      "rotation": -2
+    },
+    "depth": 0.988,
+    "createdAt": 1717600848000
+  },
+  {
+    "id": "memory-137",
+    "src": "/assets/aigen-old/memory-103.webp",
+    "title": "校门宣传栏",
+    "tags": [
+      "校门",
+      "宣传栏",
+      "校名",
+      "围墙",
+      "校园"
+    ],
+    "mood": "熟悉",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 18,
+      "y": 73,
+      "rotation": -1
+    },
+    "depth": 0.99,
+    "createdAt": 1717600856000
+  },
+  {
+    "id": "memory-138",
+    "src": "/assets/aigen-old/memory-104.webp",
+    "title": "彩色跑道",
+    "tags": [
+      "跑道",
+      "操场",
+      "彩色地面",
+      "校园",
+      "体育课"
+    ],
+    "mood": "开阔",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 30,
+      "y": 73,
+      "rotation": 0
+    },
+    "depth": 0.992,
+    "createdAt": 1717600864000
+  },
+  {
+    "id": "memory-139",
+    "src": "/assets/aigen-old/memory-107.webp",
+    "title": "树下校墙",
+    "tags": [
+      "校墙",
+      "树影",
+      "教学楼",
+      "校园",
+      "午后"
+    ],
+    "mood": "安静",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 42,
+      "y": 73,
+      "rotation": 1
+    },
+    "depth": 0.994,
+    "createdAt": 1717600872000
+  },
+  {
+    "id": "memory-140",
+    "src": "/assets/aigen-old/memory-109.webp",
+    "title": "旧教学楼",
+    "tags": [
+      "教学楼",
+      "窗户",
+      "校园",
+      "旧楼",
+      "课堂"
+    ],
+    "mood": "怀旧",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 54,
+      "y": 73,
+      "rotation": 2
+    },
+    "depth": 0.996,
+    "createdAt": 1717600880000
+  },
+  {
+    "id": "memory-141",
+    "src": "/assets/aigen-old/memory-110.webp",
+    "title": "国旗旁的教学楼",
+    "tags": [
+      "国旗",
+      "教学楼",
+      "白墙",
+      "校园",
+      "升旗"
+    ],
+    "mood": "清晨",
+    "era": "校园",
+    "type": "school",
+    "defaultPosition": {
+      "x": 66,
+      "y": 73,
+      "rotation": -1
+    },
+    "depth": 0.998,
+    "createdAt": 1717600888000
+  },
+  {
+    "id": "memory-142",
+    "src": "/assets/aigen-old/memory-111.webp",
+    "title": "楼顶看旧城",
+    "tags": [
+      "楼顶",
+      "旧城",
+      "屋顶",
+      "远山",
+      "俯瞰"
+    ],
+    "mood": "辽阔",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 78,
+      "y": 73,
+      "rotation": 1
+    },
+    "depth": 1,
+    "createdAt": 1717600896000
+  },
+  {
+    "id": "memory-143",
+    "src": "/assets/aigen-old/memory-112.webp",
+    "title": "带铁栏的居民楼",
+    "tags": [
+      "居民楼",
+      "阳台",
+      "铁栏",
+      "门洞",
+      "旧楼"
+    ],
+    "mood": "日常",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 88,
+      "y": 73,
+      "rotation": 0
+    },
+    "depth": 1.002,
+    "createdAt": 1717600904000
+  },
+  {
+    "id": "memory-144",
+    "src": "/assets/aigen-old/memory-113.webp",
+    "title": "宽阔社区路",
+    "tags": [
+      "社区路",
+      "居民楼",
+      "自行车",
+      "旧城",
+      "道路"
+    ],
+    "mood": "开阔",
+    "era": "旧城",
+    "type": "street",
+    "defaultPosition": {
+      "x": 8,
+      "y": 78,
+      "rotation": -2
+    },
+    "depth": 1.004,
+    "createdAt": 1717600912000
+  },
+  {
+    "id": "memory-145",
+    "src": "/assets/aigen-old/memory-114.webp",
+    "title": "围墙后的楼群",
+    "tags": [
+      "围墙",
+      "楼群",
+      "树木",
+      "旧城",
+      "院落"
+    ],
+    "mood": "遥远",
+    "era": "童年",
+    "type": "building",
+    "defaultPosition": {
+      "x": 18,
+      "y": 78,
+      "rotation": -1
+    },
+    "depth": 1.006,
+    "createdAt": 1717600920000
+  },
+  {
+    "id": "memory-146",
+    "src": "/assets/aigen-old/memory-115.webp",
+    "title": "晴天里的红顶楼",
+    "tags": [
+      "红顶楼",
+      "晴天",
+      "白墙",
+      "旧楼",
+      "蓝天"
+    ],
+    "mood": "明朗",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 30,
+      "y": 78,
+      "rotation": 0
+    },
+    "depth": 1.008,
+    "createdAt": 1717600928000
+  },
+  {
+    "id": "memory-147",
+    "src": "/assets/aigen-old/memory-116.webp",
+    "title": "拆迁空楼",
+    "tags": [
+      "拆迁",
+      "空楼",
+      "碎石",
+      "旧城",
+      "废墟"
+    ],
+    "mood": "失落",
+    "era": "旧城",
+    "type": "building",
+    "defaultPosition": {
+      "x": 42,
+      "y": 78,
+      "rotation": 1
+    },
+    "depth": 1.01,
+    "createdAt": 1717600936000
   }
 ]

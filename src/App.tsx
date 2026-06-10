@@ -108,6 +108,9 @@ const LOADING_FREEFORM_MS = 8_000;
 const LOADING_REVEAL_MS = 2_000;
 const LOADING_COMPLETE_CROSSFADE_MS = 850;
 const EDITOR_HOME_RETURN_MS = 1_180;
+const SAVED_HOME_FADE_DELAY_MS = 5 * 60 * 1000;
+const SAVED_HOME_FADE_DURATION_MS = 60 * 1000;
+const SAVED_HOME_LIFETIME_MS = SAVED_HOME_FADE_DELAY_MS + SAVED_HOME_FADE_DURATION_MS;
 const MAX_CANVAS_DPR = 1.5;
 const LOW_CANVAS_DPR = 1;
 const RESULT_IMAGE_CANVAS_WIDTH = 480;
@@ -562,6 +565,39 @@ function App() {
     });
   }, [savedMemories]);
 
+  useEffect(() => {
+    if (!savedMemories.length) return;
+    const syncSavedHomeLifecycle = () => {
+      const now = Date.now();
+      setPhotos((current) => {
+        let changed = false;
+        const next = current.flatMap((photo) => {
+          if (!photo.isUserSaved) return [photo];
+          if (photo.createdAt + SAVED_HOME_LIFETIME_MS <= now) {
+            changed = true;
+            return [];
+          }
+          if (photo.createdAt + SAVED_HOME_FADE_DELAY_MS <= now && photo.state !== 'fading') {
+            changed = true;
+            return [{ ...photo, state: 'fading' as const }];
+          }
+          return [photo];
+        });
+        return changed ? next : current;
+      });
+
+      const nextSaved = normalizeSavedMemories(savedMemories);
+      const changed =
+        nextSaved.length !== savedMemories.length ||
+        nextSaved.some((item, index) => item.id !== savedMemories[index]?.id);
+      if (changed) setSavedMemories(writeSavedMemories(nextSaved));
+    };
+
+    syncSavedHomeLifecycle();
+    const timer = window.setInterval(syncSavedHomeLifecycle, 1000);
+    return () => window.clearInterval(timer);
+  }, [savedMemories]);
+
   return (
     <main className="app-shell">
       <CursorField />
@@ -728,8 +764,10 @@ function writeSavedMemories(memories: SavedMemory[]) {
 
 function normalizeSavedMemories(memories: unknown[]) {
   const seen = new Set<string>();
+  const now = Date.now();
   return memories
     .filter(isSavedMemory)
+    .filter((item) => item.createdAt + SAVED_HOME_LIFETIME_MS > now)
     .sort((a, b) => b.createdAt - a.createdAt)
     .filter((item) => {
       if (seen.has(item.id)) return false;
@@ -791,7 +829,7 @@ function makeSavedHomePhoto(saved: SavedMemory, rank = 0, total = 1): PhotoNode 
     entryDelay: 0,
     windPhase: 0.7 + rank * 0.31,
     createdAt: saved.createdAt,
-    expiresAt: saved.createdAt + 180_000,
+    expiresAt: saved.createdAt + SAVED_HOME_LIFETIME_MS,
     state: 'visible',
     homeLayer: 'saved',
     homeZ: HOME_NEAR_FADE_START + 220 + rank * 440,
@@ -1410,7 +1448,7 @@ function MemoryPhoto({
     <button
       ref={ref}
       type="button"
-      className={`memory-photo memory-photo--${photo.kind} memory-photo--${photo.state} memory-photo--entered ${scattered ? 'memory-photo--scattered' : ''}`}
+      className={`memory-photo memory-photo--${photo.kind} memory-photo--${photo.state} memory-photo--entered ${photo.isUserSaved ? 'memory-photo--user-saved' : ''} ${scattered ? 'memory-photo--scattered' : ''}`}
       onClick={photo.kind !== 'fence' ? onOpen : undefined}
       onPointerMove={onPointerMove}
       style={
@@ -1508,7 +1546,7 @@ function homeStaticVisualForPhoto(photo: PhotoNode, dimmed: boolean, scattered: 
   let scale = 0.45 + travel * 0.34 + focus * 0.17 + pass * 0.18;
 
   if (photo.state === 'fading') {
-    opacity = 0.08;
+    opacity = photo.isUserSaved ? 0 : 0.08;
   } else if (photo.homeLayer === 'transition') {
     opacity = 0.9;
     blur = Math.min(blur, 0.7);
@@ -1520,7 +1558,8 @@ function homeStaticVisualForPhoto(photo: PhotoNode, dimmed: boolean, scattered: 
     const savedRank = photo.savedRank ?? 0;
     const savedAgeT = clamp(savedRank / Math.max(1, MAX_SAVED_MEMORIES - 1), 0, 1);
     const savedPresence = clamp(0.12 + travel * 0.28 + focus * 0.72 - pass * 0.48, 0, 1);
-    opacity = clamp((0.98 - savedAgeT * 0.24) * savedPresence, 0, 0.98);
+    const savedFade = savedHomeOpacityMultiplier(photo);
+    opacity = clamp((0.98 - savedAgeT * 0.24) * savedPresence * savedFade, 0, 0.98);
     blur = scattered ? 0.9 + scatterSeed * 0.5 + savedAgeT * 1.3 : Math.max(0.04 + savedAgeT * 1.4, blur * 0.72);
     zIndex = Math.max(80, 260 + Math.round(focus * 170 + travel * 48 - pass * 120) - savedRank * 4);
     contrast = 1.08 + focus * 0.12 - savedAgeT * 0.08;
@@ -1625,7 +1664,7 @@ function homeVisualForPhoto(photo: PhotoNode, cameraDepth: number, dimmed: boole
   let hoverScale = 1.025 + clarity * 0.035;
 
   if (photo.state === 'fading') {
-    opacity = 0.08;
+    opacity = photo.isUserSaved ? 0 : 0.08;
   } else if (photo.homeLayer === 'transition') {
     opacity = 0.9;
     blur = Math.min(blur, 0.7);
@@ -1636,7 +1675,8 @@ function homeVisualForPhoto(photo: PhotoNode, cameraDepth: number, dimmed: boole
   } else if (photo.homeLayer === 'saved') {
     const savedRank = photo.savedRank ?? 0;
     const savedAgeT = clamp(savedRank / Math.max(1, MAX_SAVED_MEMORIES - 1), 0, 1);
-    opacity = clamp(opacity * (1.04 - savedAgeT * 0.24), 0, 0.98);
+    const savedFade = savedHomeOpacityMultiplier(photo);
+    opacity = clamp(opacity * (1.04 - savedAgeT * 0.24) * savedFade, 0, 0.98);
     blur = scattered ? 0.9 + scatterSeed * 0.5 + savedAgeT * 1.3 : Math.max(0.04 + savedAgeT * 1.4, blur * 0.72);
     zIndex += 260 - savedRank * 4;
     contrast = 1.08 + clarity * 0.12 - savedAgeT * 0.08;
@@ -1681,6 +1721,13 @@ function homeVisualForPhoto(photo: PhotoNode, cameraDepth: number, dimmed: boole
     shadowTightAlpha,
     hoverScale,
   };
+}
+
+function savedHomeOpacityMultiplier(photo: PhotoNode) {
+  if (!photo.isUserSaved) return 1;
+  const fadeElapsed = Date.now() - photo.createdAt - SAVED_HOME_FADE_DELAY_MS;
+  if (fadeElapsed <= 0) return 1;
+  return 1 - clamp(fadeElapsed / SAVED_HOME_FADE_DURATION_MS, 0, 1);
 }
 
 function homeEditParamsFilter(params: EditParams) {

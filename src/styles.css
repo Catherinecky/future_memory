@@ -467,6 +467,11 @@ button:focus-visible {
   filter: blur(4px) saturate(0.4);
 }
 
+.memory-photo--user-saved.memory-photo--fading {
+  transition-duration: 60s;
+  pointer-events: none;
+}
+
 .memory-photo--waiting {
   pointer-events: none;
 }
